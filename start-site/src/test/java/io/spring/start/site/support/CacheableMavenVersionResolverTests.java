@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2023 the original author or authors.
+ * Copyright 2012-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ package io.spring.start.site.support;
 import java.util.Map;
 
 import io.spring.initializr.versionresolver.MavenVersionResolver;
+import io.spring.start.site.SupportedBootVersion;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.Cache;
 import org.springframework.cache.Cache.ValueWrapper;
 import org.springframework.cache.CacheManager;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,6 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Stephane Nicoll
  */
 @SpringBootTest
+@ActiveProfiles("test")
 @AutoConfigureCache(cacheProvider = CacheType.SIMPLE)
 class CacheableMavenVersionResolverTests {
 
@@ -61,10 +64,10 @@ class CacheableMavenVersionResolverTests {
 	@Test
 	void managedDependenciesAreCached() {
 		Map<String, String> dependencies = this.versionResolver.resolveDependencies("org.springframework.boot",
-				"spring-boot-dependencies", "3.1.0");
+				"spring-boot-dependencies", SupportedBootVersion.latest().getVersion());
 		assertThat(dependencies).isNotNull();
-		ValueWrapper valueWrapper = this.cache
-			.get("dependencies-org.springframework.boot:spring-boot-dependencies:3.1.0");
+		ValueWrapper valueWrapper = this.cache.get("dependencies-org.springframework.boot:spring-boot-dependencies:%s"
+			.formatted(SupportedBootVersion.latest().getVersion()));
 		assertThat(valueWrapper).isNotNull();
 		assertThat(valueWrapper.get()).isInstanceOf(Map.class);
 	}
@@ -72,9 +75,10 @@ class CacheableMavenVersionResolverTests {
 	@Test
 	void managedPluginsAreCached() {
 		Map<String, String> plugins = this.versionResolver.resolvePlugins("org.springframework.boot",
-				"spring-boot-dependencies", "3.1.0");
+				"spring-boot-dependencies", SupportedBootVersion.latest().getVersion());
 		assertThat(plugins).isNotNull();
-		ValueWrapper valueWrapper = this.cache.get("plugins-org.springframework.boot:spring-boot-dependencies:3.1.0");
+		ValueWrapper valueWrapper = this.cache.get("plugins-org.springframework.boot:spring-boot-dependencies:%s"
+			.formatted(SupportedBootVersion.latest().getVersion()));
 		assertThat(valueWrapper).isNotNull();
 		assertThat(valueWrapper.get()).isInstanceOf(Map.class);
 	}

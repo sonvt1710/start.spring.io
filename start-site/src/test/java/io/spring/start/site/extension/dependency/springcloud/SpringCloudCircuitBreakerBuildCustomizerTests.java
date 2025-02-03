@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class SpringCloudCircuitBreakerBuildCustomizerTests extends AbstractExtensionTests {
 
-	static final Dependency REACTIVE_CLOUD_CIRCUIT_BREAKER = Dependency.withId("cloud-resilience4j-reactive",
+	private static final Dependency REACTIVE_CLOUD_CIRCUIT_BREAKER = Dependency.withId("cloud-resilience4j-reactive",
 			"org.springframework.cloud", "spring-cloud-starter-circuitbreaker-reactor-resilience4j");
 
 	@Test

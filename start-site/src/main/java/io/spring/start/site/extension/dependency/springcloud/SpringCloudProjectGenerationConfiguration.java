@@ -24,11 +24,9 @@ import io.spring.initializr.generator.buildsystem.gradle.GradleBuildSystem;
 import io.spring.initializr.generator.buildsystem.maven.MavenBuild;
 import io.spring.initializr.generator.buildsystem.maven.MavenBuildSystem;
 import io.spring.initializr.generator.condition.ConditionalOnBuildSystem;
-import io.spring.initializr.generator.condition.ConditionalOnPlatformVersion;
 import io.spring.initializr.generator.condition.ConditionalOnRequestedDependency;
 import io.spring.initializr.generator.io.template.MustacheTemplateRenderer;
 import io.spring.initializr.generator.project.ProjectDescription;
-import io.spring.initializr.generator.project.ProjectDescriptionDiff;
 import io.spring.initializr.generator.project.ProjectGenerationConfiguration;
 import io.spring.initializr.generator.project.contributor.ProjectContributor;
 import io.spring.initializr.metadata.InitializrMetadata;
@@ -44,25 +42,25 @@ import org.springframework.context.annotation.Configuration;
  * @author Stephane Nicoll
  */
 @ProjectGenerationConfiguration
-public class SpringCloudProjectGenerationConfiguration {
+class SpringCloudProjectGenerationConfiguration {
 
 	private final InitializrMetadata metadata;
 
 	private final ProjectDescription description;
 
-	public SpringCloudProjectGenerationConfiguration(InitializrMetadata metadata, ProjectDescription description) {
+	SpringCloudProjectGenerationConfiguration(InitializrMetadata metadata, ProjectDescription description) {
 		this.metadata = metadata;
 		this.description = description;
 	}
 
 	@Bean
-	public SpringCloudFunctionBuildCustomizer springCloudFunctionBuildCustomizer() {
+	SpringCloudFunctionBuildCustomizer springCloudFunctionBuildCustomizer() {
 		return new SpringCloudFunctionBuildCustomizer(this.metadata, this.description);
 	}
 
 	@Bean
-	public SpringCloudStreamBuildCustomizer springCloudStreamBuildCustomizer() {
-		return new SpringCloudStreamBuildCustomizer(this.description);
+	SpringCloudStreamBuildCustomizer springCloudStreamBuildCustomizer() {
+		return new SpringCloudStreamBuildCustomizer();
 	}
 
 	@Bean
@@ -71,23 +69,15 @@ public class SpringCloudProjectGenerationConfiguration {
 	}
 
 	@Bean
-	public SpringCloudFunctionHelpDocumentCustomizer springCloudFunctionHelpDocumentCustomizer(Build build,
+	SpringCloudFunctionHelpDocumentCustomizer springCloudFunctionHelpDocumentCustomizer(Build build,
 			MustacheTemplateRenderer templateRenderer, SpringCloudProjectVersionResolver versionResolver) {
 		return new SpringCloudFunctionHelpDocumentCustomizer(build, this.description, templateRenderer,
 				versionResolver);
 	}
 
 	@Bean
-	public SpringCloudCircuitBreakerBuildCustomizer springCloudCircuitBreakerBuildCustomizer() {
+	SpringCloudCircuitBreakerBuildCustomizer springCloudCircuitBreakerBuildCustomizer() {
 		return new SpringCloudCircuitBreakerBuildCustomizer(this.metadata, this.description);
-	}
-
-	@Bean
-	@ConditionalOnRequestedDependency("cloud-gateway")
-	@ConditionalOnPlatformVersion("[2.6.0,3.2.0-M1)")
-	public SpringCloudGatewayHelpDocumentCustomizer springCloudGatewayHelpDocumentCustomizer(
-			ProjectDescriptionDiff diff) {
-		return new SpringCloudGatewayHelpDocumentCustomizer(diff);
 	}
 
 	@Configuration(proxyBeanMethods = false)

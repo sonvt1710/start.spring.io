@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2023 the original author or authors.
+ * Copyright 2012-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.spring.initializr.generator.language.Language;
+import io.spring.initializr.generator.language.kotlin.KotlinLanguage;
 import io.spring.initializr.generator.project.MutableProjectDescription;
 import io.spring.initializr.generator.project.ProjectDescriptionCustomizer;
-import io.spring.initializr.generator.version.Version;
-import io.spring.initializr.generator.version.VersionParser;
-import io.spring.initializr.generator.version.VersionRange;
 
 /**
  * Validate that the requested java version is compatible with the chosen Spring Boot
@@ -32,47 +30,36 @@ import io.spring.initializr.generator.version.VersionRange;
  *
  * @author Stephane Nicoll
  * @author Madhura Bhave
+ * @author Moritz Halbritter
  */
 public class JavaVersionProjectDescriptionCustomizer implements ProjectDescriptionCustomizer {
 
-	private static final List<String> UNSUPPORTED_VERSIONS = Arrays.asList("1.6", "1.7");
-
-	private static final VersionRange SPRING_BOOT_2_6_12_OR_LATER = VersionParser.DEFAULT.parseRange("2.6.12");
-
-	private static final VersionRange SPRING_BOOT_2_7_10_OR_LATER = VersionParser.DEFAULT.parseRange("2.7.10");
-
-	private static final VersionRange SPRING_BOOT_3_0_0_OR_LATER = VersionParser.DEFAULT.parseRange("3.0.0-M1");
+	private static final List<String> UNSUPPORTED_VERSIONS = Arrays.asList("1.6", "1.7", "1.8");
 
 	@Override
 	public void customize(MutableProjectDescription description) {
 		String javaVersion = description.getLanguage().jvmVersion();
 		if (UNSUPPORTED_VERSIONS.contains(javaVersion)) {
-			updateTo(description, "1.8");
+			updateTo(description, "17");
 			return;
 		}
 		Integer javaGeneration = determineJavaGeneration(javaVersion);
 		if (javaGeneration == null) {
 			return;
 		}
-		Version platformVersion = description.getPlatformVersion();
-		// Spring Boot 3 requires Java 17
-		if (javaGeneration < 17 && SPRING_BOOT_3_0_0_OR_LATER.match(platformVersion)) {
+		if (javaGeneration < 17) {
 			updateTo(description, "17");
-			return;
 		}
-		if (javaGeneration == 19) {
-			// Java 19 support as of Spring Boot 2.6.12
-			if (!SPRING_BOOT_2_6_12_OR_LATER.match(platformVersion)) {
-				updateTo(description, "17");
+		if (javaGeneration >= 22) {
+			if (isKotlin(description)) {
+				// Kotlin 1.9.x doesn't support Java > 21
+				updateTo(description, "21");
 			}
 		}
-		if (javaGeneration == 20) {
-			// Java 20 support as of Spring Boot 2.7.10
-			if (!SPRING_BOOT_2_7_10_OR_LATER.match(platformVersion)) {
-				updateTo(description, "17");
-			}
+	}
 
-		}
+	private boolean isKotlin(MutableProjectDescription description) {
+		return description.getLanguage() instanceof KotlinLanguage;
 	}
 
 	private void updateTo(MutableProjectDescription description, String jvmVersion) {
@@ -82,11 +69,8 @@ public class JavaVersionProjectDescriptionCustomizer implements ProjectDescripti
 
 	private Integer determineJavaGeneration(String javaVersion) {
 		try {
-			if ("1.8".equals(javaVersion)) {
-				return 8;
-			}
 			int generation = Integer.parseInt(javaVersion);
-			return ((generation > 8 && generation <= 20) ? generation : null);
+			return ((generation > 9 && generation <= 23) ? generation : null);
 		}
 		catch (NumberFormatException ex) {
 			return null;

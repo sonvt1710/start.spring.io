@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2023 the original author or authors.
+ * Copyright 2012-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import io.spring.initializr.generator.buildsystem.Build;
 import io.spring.initializr.generator.buildsystem.gradle.GradleBuildSystem;
 import io.spring.initializr.generator.buildsystem.maven.MavenBuildSystem;
 import io.spring.initializr.generator.condition.ConditionalOnBuildSystem;
-import io.spring.initializr.generator.condition.ConditionalOnPlatformVersion;
 import io.spring.initializr.generator.condition.ConditionalOnRequestedDependency;
 import io.spring.initializr.generator.condition.ProjectGenerationCondition;
 import io.spring.initializr.generator.language.groovy.GroovyLanguage;
@@ -48,7 +47,6 @@ import org.springframework.util.function.SingletonSupplier;
  */
 @ProjectGenerationConfiguration
 @ConditionalOnRequestedDependency("native")
-@ConditionalOnPlatformVersion("3.0.0-M1")
 @Conditional(CompatibleLanguageCondition.class)
 class GraalVmProjectGenerationConfiguration {
 
@@ -71,15 +69,9 @@ class GraalVmProjectGenerationConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnBuildSystem(value = GradleBuildSystem.ID, dialect = GradleBuildSystem.DIALECT_GROOVY)
-	GraalVmGroovyDslGradleBuildCustomizer graalVmGroovyDslGradleBuildCustomizer() {
-		return new GraalVmGroovyDslGradleBuildCustomizer(this.nbtVersion.get());
-	}
-
-	@Bean
-	@ConditionalOnBuildSystem(value = GradleBuildSystem.ID, dialect = GradleBuildSystem.DIALECT_KOTLIN)
-	GraalVmKotlinDslGradleBuildCustomizer graalVmKotlinDslGradleBuildCustomizer() {
-		return new GraalVmKotlinDslGradleBuildCustomizer(this.nbtVersion.get());
+	@ConditionalOnBuildSystem(GradleBuildSystem.ID)
+	GraalVmGradleBuildCustomizer graalVmGradleBuildCustomizer() {
+		return new GraalVmGradleBuildCustomizer(this.nbtVersion.get());
 	}
 
 	@Bean
@@ -105,17 +97,10 @@ class GraalVmProjectGenerationConfiguration {
 		}
 
 		@Bean
-		@ConditionalOnBuildSystem(value = GradleBuildSystem.ID, dialect = GradleBuildSystem.DIALECT_GROOVY)
-		HibernatePluginGroovyDslGradleBuildCustomizer hibernatePluginGroovyDslGradleBuildCustomizer(
+		@ConditionalOnBuildSystem(GradleBuildSystem.ID)
+		HibernatePluginGradleBuildCustomizer hibernatePluginGroovyDslGradleBuildCustomizer(
 				MavenVersionResolver versionResolver) {
-			return new HibernatePluginGroovyDslGradleBuildCustomizer(determineHibernateVersion(versionResolver));
-		}
-
-		@Bean
-		@ConditionalOnBuildSystem(value = GradleBuildSystem.ID, dialect = GradleBuildSystem.DIALECT_KOTLIN)
-		HibernatePluginKotlinDslGradleBuildCustomizer hibernatePluginKotlinDslGradleBuildCustomizer(
-				MavenVersionResolver versionResolver) {
-			return new HibernatePluginKotlinDslGradleBuildCustomizer(determineHibernateVersion(versionResolver));
+			return new HibernatePluginGradleBuildCustomizer(determineHibernateVersion(versionResolver));
 		}
 
 		private Version determineHibernateVersion(MavenVersionResolver versionResolver) {

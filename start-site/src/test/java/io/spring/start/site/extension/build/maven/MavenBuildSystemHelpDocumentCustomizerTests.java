@@ -16,42 +16,39 @@
 
 package io.spring.start.site.extension.build.maven;
 
-import io.spring.initializr.generator.test.io.TextAssert;
-import io.spring.initializr.generator.test.project.ProjectStructure;
 import io.spring.initializr.web.project.ProjectRequest;
 import io.spring.start.site.extension.AbstractExtensionTests;
 import org.assertj.core.api.ListAssert;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests for {@link MavenBuildSystemHelpDocumentCustomizer}.
  *
  * @author Jenn Strater
  * @author Andy Wilkinson
+ * @author Moritz Halbritter
  */
 class MavenBuildSystemHelpDocumentCustomizerTests extends AbstractExtensionTests {
 
 	@Test
 	void linksAddedToHelpDocumentForMavenBuild() {
-		assertHelpDocument("maven-build", "3.0.0").contains(
+		assertHelpDocument("maven-build").contains(
 				"* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)",
-				"* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/3.0.0/maven-plugin/reference/html/)",
-				"* [Create an OCI image](https://docs.spring.io/spring-boot/docs/3.0.0/maven-plugin/reference/html/#build-image)");
+				"* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/3.4.0/maven-plugin)",
+				"* [Create an OCI image](https://docs.spring.io/spring-boot/3.4.0/maven-plugin/build-image.html)");
 	}
 
 	@Test
 	void linksNotAddedToHelpDocumentForGradleBuild() {
-		assertHelpDocument("gradle-build", "3.0.0").doesNotContain(
-				"* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)",
-				"* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/3.0.0/maven-plugin/)");
+		assertHelpDocument("gradle-build").noneMatch((line) -> line.contains("Maven"));
 	}
 
-	private ListAssert<String> assertHelpDocument(String type, String version) {
+	private ListAssert<String> assertHelpDocument(String type) {
 		ProjectRequest request = createProjectRequest("web");
 		request.setType(type);
-		request.setBootVersion(version);
-		ProjectStructure project = generateProject(request);
-		return new TextAssert(project.getProjectDirectory().resolve("HELP.md")).lines();
+		return assertThat(helpDocument(request)).lines();
 	}
 
 }
