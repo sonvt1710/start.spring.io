@@ -89,8 +89,10 @@ initializr:
         artifactId: spring-ai-bom
         versionProperty: spring-ai.version
         mappings:
-          - compatibilityRange: "[3.4.0,4.0.0-M1)"
+          - compatibilityRange: "[3.4.0,3.5.0-M1)"
             version: 1.0.3
+          - compatibilityRange: "[3.5.0,4.0.0-M1)"
+            version: 1.1.0
       spring-cloud:
         groupId: org.springframework.cloud
         artifactId: spring-cloud-dependencies
@@ -567,9 +569,18 @@ initializr:
           links:
             - rel: reference
               href: https://docs.spring.io/spring-security/reference/servlet/authentication/passkeys.html
+        - name: LDAP
+          id: ldap
+          groupId: org.springframework.boot
+          artifactId: spring-boot-starter-ldap
+          compatibilityRange: "4.0.0-RC1"
+          description: LDAP is an open, vendor-neutral, industry standard application protocol for accessing and maintaining distributed directory information services over an IP network.
+          links:
+            - rel: reference
+              href: https://docs.spring.io/spring-boot/{bootVersion}/reference/data/nosql.html#data.nosql.ldap
         - name: Spring Data LDAP
           id: data-ldap
-          description: Makes it easier to build Spring based applications that use the Lightweight Directory Access Protocol.
+          description: Spring Data support for LDAP.
           links:
             - rel: reference
               href: https://docs.spring.io/spring-boot/{bootVersion}/reference/data/nosql.html#data.nosql.ldap
@@ -775,9 +786,18 @@ initializr:
               description: Messaging with Redis
             - rel: reference
               href: https://docs.spring.io/spring-boot/{bootVersion}/reference/data/nosql.html#data.nosql.redis
+        - name: MongoDB
+          id: mongodb
+          groupId: org.springframework.boot
+          artifactId: spring-boot-starter-mongodb
+          compatibilityRange: "4.0.0-RC1"
+          description: MongoDB is an open-source NoSQL document database that uses a JSON-like schema instead of traditional table-based relational data.
+          links:
+            - rel: reference
+              href: https://docs.spring.io/spring-boot/{bootVersion}/reference/data/nosql.html#data.nosql.mongodb
         - name: Spring Data MongoDB
           id: data-mongodb
-          description: Store data in flexible, JSON-like documents, meaning fields can vary from document to document and data structure can be changed over time.
+          description: Spring Data support for MongoDB.
           links:
             - rel: guide
               href: https://spring.io/guides/gs/accessing-data-mongodb/
@@ -786,7 +806,7 @@ initializr:
               href: https://docs.spring.io/spring-boot/{bootVersion}/reference/data/nosql.html#data.nosql.mongodb
         - name: Spring Data Reactive MongoDB
           id: data-mongodb-reactive
-          description: Provides asynchronous stream processing with non-blocking back pressure for MongoDB.
+          description: Reactive Spring Data support for MongoDB.
           facets:
             - reactive
           links:
@@ -795,15 +815,33 @@ initializr:
               description: Accessing Data with MongoDB
             - rel: reference
               href: https://docs.spring.io/spring-boot/{bootVersion}/reference/data/nosql.html#data.nosql.mongodb
-        - name: Spring Data Elasticsearch (Access+Driver)
-          id: data-elasticsearch
-          description: A distributed, RESTful search and analytics engine with Spring Data Elasticsearch.
+        - name: Elasticsearch
+          id: elasticsearch
+          groupId: org.springframework.boot
+          artifactId: spring-boot-starter-elasticsearch
+          compatibilityRange: "4.0.0-RC1"
+          description: Elasticsearch is an open source, distributed, RESTful search and analytics engine.
           links:
             - rel: reference
               href: https://docs.spring.io/spring-boot/{bootVersion}/reference/data/nosql.html#data.nosql.elasticsearch
+        - name: Spring Data Elasticsearch
+          id: data-elasticsearch
+          description: Spring Data support for Elasticsearch.
+          links:
+            - rel: reference
+              href: https://docs.spring.io/spring-boot/{bootVersion}/reference/data/nosql.html#data.nosql.elasticsearch
+        - name: Cassandra
+          id: cassandra
+          groupId: org.springframework.boot
+          artifactId: spring-boot-starter-cassandra
+          compatibilityRange: "4.0.0-RC1"
+          description: Cassandra is an open source, distributed database management system designed to handle large amounts of data across many commodity servers.
+          links:
+            - rel: reference
+              href: https://docs.spring.io/spring-boot/{bootVersion}/reference/data/nosql.html#data.nosql.cassandra
         - name: Spring Data for Apache Cassandra
           id: data-cassandra
-          description: A free and open-source, distributed, NoSQL database management system that offers high-scalability and high-performance.
+          description: Spring Data support for Cassandra.
           links:
             - rel: guide
               href: https://spring.io/guides/gs/accessing-data-cassandra/
@@ -811,7 +849,7 @@ initializr:
               href: https://docs.spring.io/spring-boot/{bootVersion}/reference/data/nosql.html#data.nosql.cassandra
         - name: Spring Data Reactive for Apache Cassandra
           id: data-cassandra-reactive
-          description: Access Cassandra NoSQL Database in a reactive fashion.
+          description: Reactive Spring Data support for Cassandra.
           facets:
             - reactive
           links:
@@ -819,23 +857,41 @@ initializr:
               href: https://spring.io/guides/gs/accessing-data-cassandra/
             - rel: reference
               href: https://docs.spring.io/spring-boot/{bootVersion}/reference/data/nosql.html#data.nosql.cassandra
+        - name: Couchbase
+          id: couchbase
+          groupId: org.springframework.boot
+          artifactId: spring-boot-starter-couchbase
+          compatibilityRange: "4.0.0-RC1"
+          description: Couchbase is an open-source, distributed, multi-model NoSQL document-oriented database that is optimized for interactive applications.
+          links:
+            - rel: reference
+              href: https://docs.spring.io/spring-boot/{bootVersion}/reference/data/nosql.html#data.nosql.couchbase
         - name: Spring Data Couchbase
           id: data-couchbase
-          description: NoSQL document-oriented database that offers in memory-first architecture, geo-distributed deployments, and workload isolation.
+          description: Spring Data support for Couchbase.
           links:
             - rel: reference
               href: https://docs.spring.io/spring-boot/{bootVersion}/reference/data/nosql.html#data.nosql.couchbase
         - name: Spring Data Reactive Couchbase
           id: data-couchbase-reactive
-          description: Access Couchbase NoSQL database in a reactive fashion with Spring Data Couchbase.
+          description: Reactive Spring Data support for Couchbase.
           facets:
             - reactive
           links:
             - rel: reference
               href: https://docs.spring.io/spring-boot/{bootVersion}/reference/data/nosql.html#data.nosql.couchbase
+        - name: Neo4j
+          id: neo4j
+          groupId: org.springframework.boot
+          artifactId: spring-boot-starter-neo4j
+          compatibilityRange: "4.0.0-RC1"
+          description: Neo4j is an open-source NoSQL graph database that uses a rich data model of nodes connected by first class relationships, which is better suited for connected big data than traditional RDBMS approaches.
+          links:
+            - rel: reference
+              href: https://docs.spring.io/spring-boot/{bootVersion}/reference/data/nosql.html#data.nosql.neo4j
         - name: Spring Data Neo4j
           id: data-neo4j
-          description: An open source NoSQL database that stores data structured as graphs consisting of nodes, connected by relationships.
+          description: Spring Data support for Neo4j.
           links:
             - rel: guide
               href: https://spring.io/guides/gs/accessing-data-neo4j/
@@ -1001,6 +1057,15 @@ initializr:
           links:
             - rel: reference
               href: https://docs.spring.io/spring-boot/{bootVersion}/how-to/batch.html
+        - name: Hazelcast
+          id: hazelcast
+          groupId: org.springframework.boot
+          artifactId: spring-boot-starter-hazelcast
+          compatibilityRange: "4.0.0-RC1"
+          description: Hazelcast is a distributed cache with in-memory compute and stream processing that accelerates applications with data caching, data integration, and distributed computing.
+          links:
+            - rel: reference
+              href: https://docs.spring.io/spring-boot/{bootVersion}/reference/io/hazelcast.html
         - name: Validation
           id: validation
           description: Bean Validation with Hibernate validator.
@@ -1743,6 +1808,86 @@ initializr:
           links:
             - rel: reference
               href: https://docs.spring.io/spring-ai/reference/api/bedrock-converse.html
+        - name: DeepSeek
+          id: spring-ai-deepseek
+          group-id: org.springframework.ai
+          artifact-id: spring-ai-starter-model-deepseek
+          compatibilityRange: "[3.5.0,4.0.0-M1)"
+          description: Spring AI support for DeepSeek AI models.
+          bom: spring-ai
+          links:
+            - rel: reference
+              href: https://docs.spring.io/spring-ai/reference/api/chat/deepseek-chat.html
+        - name: ElevenLabs
+          id: spring-ai-elevenlabs
+          group-id: org.springframework.ai
+          artifact-id: spring-ai-starter-model-elevenlabs
+          compatibilityRange: "[3.5.0,4.0.0-M1)"
+          description: Spring AI support for ElevenLabs text-to-speech models.
+          bom: spring-ai
+          links:
+            - rel: reference
+              href: https://docs.spring.io/spring-ai/reference/api/speech/elevenlabs-speech.html
+        - name: Google GenAI
+          id: spring-ai-google-genai
+          group-id: org.springframework.ai
+          artifact-id: spring-ai-starter-model-google-genai
+          compatibilityRange: "[3.5.0,4.0.0-M1)"
+          description: Spring AI support for Google GenAI (Gemini) models.
+          bom: spring-ai
+          links:
+            - rel: reference
+              href: https://docs.spring.io/spring-ai/reference/api/chat/google-genai-chat.html
+        - name: Google GenAI Embeddings
+          id: spring-ai-google-genai-embedding
+          group-id: org.springframework.ai
+          artifact-id: spring-ai-starter-model-google-genai-embedding
+          compatibilityRange: "[3.5.0,4.0.0-M1)"
+          description: Spring AI support for Google GenAI embedding models.
+          bom: spring-ai
+          links:
+            - rel: reference
+              href: https://docs.spring.io/spring-ai/reference/api/embeddings/google-genai-embeddings.html
+        - name: HuggingFace
+          id: spring-ai-huggingface
+          group-id: org.springframework.ai
+          artifact-id: spring-ai-starter-model-huggingface
+          compatibilityRange: "[3.5.0,4.0.0-M1)"
+          description: Spring AI support for HuggingFace AI models.
+          bom: spring-ai
+          links:
+            - rel: reference
+              href: https://docs.spring.io/spring-ai/reference/api/chat/huggingface.html
+        - name: MiniMax
+          id: spring-ai-minimax
+          group-id: org.springframework.ai
+          artifact-id: spring-ai-starter-model-minimax
+          compatibilityRange: "[3.5.0,4.0.0-M1)"
+          description: Spring AI support for MiniMax AI models.
+          bom: spring-ai
+          links:
+            - rel: reference
+              href: https://docs.spring.io/spring-ai/reference/api/chat/minimax-chat.html
+        - name: OCI GenAI
+          id: spring-ai-oci-genai
+          group-id: org.springframework.ai
+          artifact-id: spring-ai-starter-model-oci-genai
+          compatibilityRange: "[3.5.0,4.0.0-M1)"
+          description: Spring AI support for Oracle Cloud Infrastructure (OCI) GenAI models.
+          bom: spring-ai
+          links:
+            - rel: reference
+              href: https://docs.spring.io/spring-ai/reference/api/chat/oci-genai-chat.html
+        - name: ZhipuAI
+          id: spring-ai-zhipuai
+          group-id: org.springframework.ai
+          artifact-id: spring-ai-starter-model-zhipuai
+          compatibilityRange: "[3.5.0,4.0.0-M1)"
+          description: Spring AI support for ZhipuAI models.
+          bom: spring-ai
+          links:
+            - rel: reference
+              href: https://docs.spring.io/spring-ai/reference/api/chat/zhipuai-chat.html
         - name: Apache Cassandra Vector Database
           id: spring-ai-vectordb-cassandra
           group-id: org.springframework.ai
@@ -1761,6 +1906,16 @@ initializr:
           links:
             - rel: reference
               href: https://docs.spring.io/spring-ai/reference/api/vectordbs/chroma.html
+        - name: Couchbase Vector Database
+          id: spring-ai-vectordb-couchbase
+          group-id: org.springframework.ai
+          artifact-id: spring-ai-starter-vector-store-couchbase
+          compatibilityRange: "[3.5.0,4.0.0-M1)"
+          description: Spring AI vector database support for Couchbase.
+          bom: spring-ai
+          links:
+            - rel: reference
+              href: https://docs.spring.io/spring-ai/reference/api/vectordbs/couchbase.html
         - name: Elasticsearch Vector Database
           id: spring-ai-vectordb-elasticsearch
           group-id: org.springframework.ai
@@ -1833,6 +1988,26 @@ initializr:
           links:
             - rel: reference
               href: https://docs.spring.io/spring-ai/reference/api/vectordbs/neo4j.html
+        - name: OpenSearch Vector Database
+          id: spring-ai-vectordb-opensearch
+          group-id: org.springframework.ai
+          artifact-id: spring-ai-starter-vector-store-opensearch
+          compatibilityRange: "[3.5.0,4.0.0-M1)"
+          description: Spring AI vector database support for OpenSearch.
+          bom: spring-ai
+          links:
+            - rel: reference
+              href: https://docs.spring.io/spring-ai/reference/api/vectordbs/opensearch.html
+        - name: AWS OpenSearch Vector Database
+          id: spring-ai-vectordb-aws-opensearch
+          group-id: org.springframework.ai
+          artifact-id: spring-ai-starter-vector-store-aws-opensearch
+          compatibilityRange: "[3.5.0,4.0.0-M1)"
+          description: Spring AI vector database support for AWS OpenSearch Service.
+          bom: spring-ai
+          links:
+            - rel: reference
+              href: https://docs.spring.io/spring-ai/reference/api/vectordbs/opensearch.html
         - name: Ollama
           id: spring-ai-ollama
           group-id: org.springframework.ai
@@ -1874,6 +2049,16 @@ initializr:
           group-id: org.springframework.ai
           artifact-id: spring-ai-starter-model-chat-memory-repository-cassandra
           description: Spring AI support for Cassandra based chat memory.
+          bom: spring-ai
+          links:
+            - rel: reference
+              href: https://docs.spring.io/spring-ai/reference/api/chat-memory.html
+        - name: MongoDB Chat Memory Repository
+          id: spring-ai-chat-memory-repository-mongodb
+          group-id: org.springframework.ai
+          artifact-id: spring-ai-starter-model-chat-memory-repository-mongodb
+          compatibilityRange: "[3.5.0,4.0.0-M1)"
+          description: Spring AI support for MongoDB based chat memory.
           bom: spring-ai
           links:
             - rel: reference
